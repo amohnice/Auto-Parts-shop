@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Summary{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Order Summary</h1>
+        <ul>
+            {% for item in items %}
+                <li>
+                    {{ item.quantity }} x {{ item.part.name }} - {{ item.part.price }} {{ item.part.currency }}
+                </li>
+            {% endfor %}
+        </ul>
+        <h3>Total: {{ total }}</h3>
+        <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+        <a href="{% url 'view_cart' %}" class="btn btn-secondary">Go Back to Cart</a>
+    </div>
+{% endblock %}

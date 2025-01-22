@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Parts</h1>
+        <form method="get" action="{% url 'search' %}">
+            {{ form.as_p }}
+            <h3>Filters</h3>
+            {{ filter_form.as_p }}
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <h2>Results</h2>
+        <ul>
+            {% for result in results %}
+                <li>
+                    <a href="{% url 'part_detail' result.id %}">{{ result.name }}</a> - {{ result.price }} {{ result.currency }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        $(function() {
+            $("#id_query").autocomplete({
+                source: "/autocomplete/",
+                minLength: 2,
+            });
+        });
+    </script>
+</body>
+</html>

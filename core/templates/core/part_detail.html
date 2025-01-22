@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% load custom_filters %}
+
+{% block title %}{{ part.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            {% if part.image %}
+                <img src="{{ part.image.url }}" class="img-fluid uniform-image rounded" alt="{{ part.name }}">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h1 class="display-4">{{ part.name }}</h1>
+            <p><strong>Category:</strong> <a href="{% url 'category_detail' part.category.id %}">{{ part.category.name }}</a></p>
+            <p><strong>Description:</strong> {{ part.description }}</p>
+            <p><strong>Price:</strong> <span class="text-success">{{ part.price }} {{ part.currency }}</span></p>
+            <p><strong>Stock:</strong> {{ part.stock }}</p>
+            <div class="btn-group" role="group">
+                <a href="{% url 'add_to_cart' part.id %}" class="btn btn-primary btn-lg">Add to Cart</a>
+                <a href="{% url 'add_to_wishlist' part.id %}" class="btn btn-secondary btn-lg">Add to Wishlist</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h2>Reviews</h2>
+        <ul class="list-group mb-4">
+            {% for review in reviews %}
+                <li class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between align-items-center">
+                        <h5 class="mb-1">{{ review.user.username }}</h5>
+                        <small class="text-muted">{{ review.created_at }}</small>
+                    </div>
+                    <p class="mb-1">{{ review.comment }}</p>
+                    <div>
+                        {% for i in 1|range_filter:6 %}
+                            {% if i <= review.rating %}
+                                <span class="fa fa-star checked"></span>
+                            {% else %}
+                                <span class="fa fa-star"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </li>
+            {% empty %}
+                <li class="list-group-item">
+                    <p class="mb-1">No reviews yet. Be the first to review this product!</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h3>Add a Review</h3>
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .uniform-image {
+        width: 100%;
+        height: 400px; /* Adjust the height as needed */
+        object-fit: cover; /* Ensures the image covers the area without distortion */
+        margin-bottom: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    .btn-group .btn {
+        margin-right: 10px;
+    }
+
+    .display-4 {
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .list-group-item h5 {
+        font-size: 1.25rem;
+    }
+
+    .list-group-item small {
+        font-size: 0.875rem;
+    }
+
+    .list-group-item p {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .needs-validation {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .needs-validation button {
+        margin-top: 10px;
+    }
+
+    .fa-star {
+        color: #ffd700;
+    }
+
+    .fa-star.checked {
+        color: #ffd700;
+    }
+</style>
+{% endblock %}

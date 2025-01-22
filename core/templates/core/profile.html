@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="profile-container">
+        <h1>User Profile</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {% if form %}
+                    {{ form.as_p }}
+                {% else %}
+                    <p>No form available.</p>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Update Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-container h1 {
+        margin-bottom: 30px;
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: center;
+        color: #343a40;
+    }
+
+    .profile-container form {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-container .form-group {
+        margin-bottom: 20px;
+    }
+
+    .profile-container input,
+    .profile-container select,
+    .profile-container textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .profile-container button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-radius: 8px;
+    }
+
+    .profile-container button:hover {
+        background-color: #0056b3;
+    }
+
+    .profile-container button:focus {
+        outline: none;
+    }
+</style>
+{% endblock %}

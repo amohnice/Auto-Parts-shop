@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Shopping Cart</h1>
+
+    {% if items %}
+    <ul class="list-group mb-4">
+        {% for item in items %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ item.quantity }} x</strong> {{ item.part.name }}
+                    <br>
+                    <small>{{ item.part.price }} {{ item.part.currency }}</small>
+                </div>
+                <div>
+                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Total price -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">Total: </h4>
+        <strong>{{ total_price }} {{ currency }}</strong>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Continue Shopping</a>
+        <a href="{% url 'order_summary' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
+    </div>
+    {% else %}
+        <p class="text-center">Your cart is empty. Start adding items to it!</p>
+    {% endif %}
+</div>
+{% endblock %}

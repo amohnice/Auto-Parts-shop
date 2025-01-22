@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<h1 class="text-center">{{ category.name }}</h1>
+<p class="text-center">{{ category.description }}</p>
+<h2 class="my-4">Parts</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% if parts %}
+        {% for part in parts %}
+            <div class="col mb-4">
+                <div class="card h-100">
+                    {% if part.image %}
+                        <img src="{{ part.image.url }}" class="card-img-top img-fluid" alt="{{ part.name }}" style="max-height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ part.name }}</h5>
+                        <p class="card-text">{{ part.price }} {{ part.currency }}</p>
+                        <a href="{% url 'part_detail' part.id %}" class="btn btn-primary mt-auto">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-info text-center" role="alert">
+                No parts available.
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

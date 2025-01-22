@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <div class="card p-5 shadow-lg" style="width: 100%; max-width: 500px;">
+        <h1 class="text-center mb-5">Register</h1>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .container-fluid {
+        background: linear-gradient(135deg, #6e8efb, #a777e3);
+    }
+
+    .card {
+        border-radius: 15px;
+        border: none;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        color: #333;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input, select, textarea {
+        border: 2px solid #ddd !important;
+        border-radius: 10px !important;
+        padding: 15px !important;
+        font-size: 1rem !important;
+    }
+
+    button {
+        font-size: 1.2rem !important;
+        font-weight: bold !important;
+        transition: background-color 0.3s !important;
+    }
+
+    button:hover {
+        background-color: #0056b3 !important;
+    }
+
+    button:focus {
+        outline: none !important;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+{% endblock %}
