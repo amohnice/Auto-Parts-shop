@@ -27,7 +27,7 @@
         max-width: 600px;
         margin: 0 auto;
         padding: 30px;
-        background-color: #f8f9fa;
+        background-color: var(--card-bg-color);
         border-radius: 10px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
@@ -37,11 +37,11 @@
         font-size: 2rem;
         font-weight: 600;
         text-align: center;
-        color: #343a40;
+        color: var(--text-primary-color);
     }
 
     .profile-container form {
-        background-color: #ffffff;
+        background-color: var(--form-bg-color);
         padding: 30px;
         border-radius: 10px;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
@@ -61,6 +61,8 @@
         box-sizing: border-box;
         font-size: 1rem;
         margin-bottom: 15px;
+        background-color: var(--input-bg-color);
+        color: var(--input-text-color);
     }
 
     .profile-container button {
@@ -70,14 +72,40 @@
         font-weight: 600;
         text-transform: uppercase;
         border-radius: 8px;
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
     }
 
     .profile-container button:hover {
-        background-color: #0056b3;
+        background-color: var(--button-bg-hover-color);
     }
 
     .profile-container button:focus {
         outline: none;
+    }
+
+    /* Light Mode */
+    [data-theme="light"] {
+        --card-bg-color: #ffffff;
+        --text-primary-color: #343a40;
+        --form-bg-color: #f8f9fa;
+        --input-bg-color: #ffffff;
+        --input-text-color: #333;
+        --button-bg-color: #007bff;
+        --button-text-color: #ffffff;
+        --button-bg-hover-color: #0056b3;
+    }
+
+    /* Dark Mode */
+    [data-theme="dark"] {
+        --card-bg-color: #2f2f2f;
+        --text-primary-color: #eaeaea;
+        --form-bg-color: #3a3a3a;
+        --input-bg-color: #444;
+        --input-text-color: #eaeaea;
+        --button-bg-color: #1e90ff;
+        --button-text-color: #ffffff;
+        --button-bg-hover-color: #1c60c9;
     }
 </style>
 {% endblock %}

@@ -1,20 +1,76 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Logged Out</title>
-    <link rel="stylesheet" href="'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Have Been Logged Out</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles to make the logged-out page look consistent */
+        .logged-out-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logged-out-message {
+            text-align: center;
+            max-width: 600px;
+            padding: 3rem;
+            background-color: var(--background-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .logged-out-message h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .logged-out-message p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container mt-5">
-        <div class="jumbotron text-center">
-            <h1 class="display-4">You have been logged out</h1>
-            <p class="lead">Thank you for visiting our Auto Parts Shop. We hope to see you again soon!</p>
-            <hr class="my-4">
-            <a class="btn btn-primary btn-lg" href="{% url 'index' %}" role="button">Return to Home</a>
+    <!-- Navigation Bar (Optional if you want it on the logged-out page) -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Auto Parts Shop Logo" height="50">
+                Auto Parts Shop
+            </a>
+        </div>
+    </nav>
+
+    <!-- Logged-Out Page Content -->
+    <div class="logged-out-section">
+        <div class="logged-out-message">
+            <h1>You have been logged out</h1>
+            <p>Thank you for visiting our Auto Parts Shop. We hope to see you again soon!</p>
+            <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Return to Home</a>
         </div>
     </div>
-    <script src="'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'"></script>
+
+    <!-- Footer (Optional if you want it on the logged-out page) -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col">
+                    <p>&copy; 2025 Auto Parts Shop. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

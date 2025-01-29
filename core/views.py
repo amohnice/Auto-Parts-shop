@@ -94,11 +94,33 @@ def add_to_cart(request, part_id):
     cart_item.save()
     return redirect('view_cart')
 
+def update_cart_quantity(request, item_id):
+    try:
+        # Get the new quantity from the GET request
+        quantity = int(request.GET.get('quantity'))
+
+        # Update the cart item in the database or session
+        cart_item = CartItem.objects.get(id=item_id, user=request.user)
+        cart_item.quantity = quantity
+        cart_item.save()
+
+        # Recalculate the total price for the cart
+        cart_items = CartItem.objects.filter(user=request.user)
+        total_price = sum(item.quantity * item.part.price for item in cart_items)
+        subtotal = sum(item.quantity * item.part.price for item in cart_items)
+
+        # Return the updated totals
+        return JsonResponse({'success': True, 'total_price': total_price, 'subtotal': subtotal})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+
 @login_required
 def remove_from_cart(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id)
     cart_item.delete()
     return redirect('view_cart')
+
 @login_required
 def order_history(request):
     customer = get_object_or_404(Customer, user=request.user)
@@ -189,8 +211,9 @@ def mpesa_callback(request):
 def order_summary(request):
     cart = Cart.objects.get(user=request.user)
     items = CartItem.objects.filter(cart=cart)
-    total = sum(item.part.price * item.quantity for item in items)
-    return render(request, 'core/order_summary.html', {'items': items, 'total': total})
+    subtotal = sum(item.quantity * item.part.price for item in items)
+    total = subtotal
+    return render(request, 'core/order_summary.html', {'items': items, 'subtotal': subtotal, 'total': total, 'currency': 'KSH'})
 
 def send_order_confirmation(user):
     subject = 'Order Confirmation'
@@ -298,3 +321,6 @@ def autocomplete(request):
 
 def about_us(request):
     return render(request, 'core/about_us.html')
+
+def logged_out(request):
+    return render(request, 'core/logged_out.html')

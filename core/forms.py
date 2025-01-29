@@ -23,8 +23,8 @@ class ReviewForm(forms.ModelForm):
 
 class FilterForm(forms.Form):
     category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
-    min_price = forms.DecimalField(required=False, min_value=0, decimal_places=2)
-    max_price = forms.DecimalField(required=False, min_value=0, decimal_places=2)
+    min_price = forms.DecimalField(required=False, min_value=0, decimal_places=2, label='Min Price')
+    max_price = forms.DecimalField(required=False, min_value=0, decimal_places=2, label='Max Price')
 
 class CategoryForm(forms.ModelForm):
     class Meta:

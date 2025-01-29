@@ -4,19 +4,196 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Checkout</h1>
-        <form action="{% url 'checkout' %}" method="post" id="payment-form">
-            {% csrf_token %}
-            <div class="form-row">
-                <label for="phone_number">Phone Number:</label>
-                <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+    <!-- Modal for Checkout -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'checkout' %}" method="post" id="payment-form">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">Phone Number:</label>
+                            <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount:</label>
+                            <input type="text" id="amount" name="amount" class="form-control" value="{{ total }}" readonly>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary w-100">Submit Payment</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-row">
-                <label for="amount">Amount:</label>
-                <input type="text" id="amount" name="amount" class="form-control" value="{{ total }}" readonly>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Submit Payment</button>
-        </form>
+        </div>
     </div>
+
+    <!-- Order Summary Section (Button to trigger the modal) -->
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Order Summary</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Order Items List -->
+                <ul class="list-group">
+                    {% for item in items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ item.quantity }} x</strong> {{ item.part.name }}
+                                <br>
+                                <small>{{ item.part.price }} {{ item.part.currency }}</small>
+                            </div>
+                            <div>
+                                <strong>{{ item.quantity }} * {{ item.part.price }} {{ item.part.currency }}</strong>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Subtotal Section -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <h4 class="mb-0">Subtotal:</h4>
+                    <strong>{{ subtotal }} {{ currency }}</strong>
+                </div>
+
+                <!-- Total Section -->
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <h4 class="mb-0">Total:</h4>
+                    <strong>{{ total }} {{ currency }}</strong>
+                </div>
+
+                <!-- Buttons Section -->
+                <div class="d-flex justify-content-between mt-4">
+                    <!-- Proceed to Checkout Button (Triggers Modal) -->
+                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                        Proceed to Checkout
+                    </button>
+                    <a href="{% url 'view_cart' %}" class="btn btn-secondary btn-lg">Go Back to Cart</a>
+                </div>
+            </div>
+
+            <!-- Sidebar (Optional) -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Summary</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Subtotal:</span> <strong>{{ subtotal }} {{ currency }}</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Total:</span> <strong>{{ total }} {{ currency }}</strong>
+                            </li>
+                        </ul>
+                        <button type="button" class="btn btn-primary btn-block mt-4" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Styling -->
+    <style>
+        /* Modal Styling */
+        .modal-content {
+            background-color: var(--card-bg-color);
+            color: var(--card-text-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--link-color);
+            padding: 1rem;
+        }
+
+        .modal-header .btn-close {
+            background-color: var(--link-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            padding: 5px;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-label {
+            color: var(--text-color);
+        }
+
+        .form-control {
+            background-color: var(--list-item-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--link-color);
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Slightly darker shade of the button color */
+            filter: brightness(85%);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        /* Button Full Width */
+        .w-100 {
+            width: 100%;
+        }
+
+        /* Ensure that dark mode has proper visibility */
+[data-theme="dark"] .modal-content {
+    background-color: #2b2b2b; /* Dark background for dark mode */
+    color: #e0e0e0; /* Light text for readability */
+}
+
+[data-theme="dark"] .modal-header {
+    border-bottom: 1px solid #1e90ff; /* Lighter border for dark mode */
+}
+
+[data-theme="dark"] .form-label {
+    color: #e0e0e0; /* Lighter label color for dark mode */
+}
+
+[data-theme="dark"] .form-control {
+    background-color: #333333; /* Darker background for inputs in dark mode */
+    color: #e0e0e0; /* Light text for inputs in dark mode */
+    border: 1px solid #1e90ff; /* Lighter border for inputs */
+}
+
+[data-theme="dark"] .btn-primary {
+    background-color: #1e90ff; /* Lighter blue for dark mode buttons */
+    color: #ffffff;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background-color: #1c60c9; /* Slightly darker blue for hover */
+}
+
+[data-theme="dark"] .btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+}
+
+    </style>
+
 {% endblock %}

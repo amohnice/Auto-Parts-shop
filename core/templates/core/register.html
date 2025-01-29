@@ -8,7 +8,14 @@
         <h1 class="text-center mb-5">Register</h1>
         <form method="post" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
+            <div class="form-group">
+                {% if form %}
+                    {{ form.as_p }}
+                {% else %}
+                    <p>No form available.</p>
+                {% endif %}
+
+            </div>
             <button type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
         </form>
     </div>
@@ -17,48 +24,72 @@
 
 {% block extra_css %}
 <style>
+    /* Background styling */
     .container-fluid {
-        background: linear-gradient(135deg, #6e8efb, #a777e3);
+        background: linear-gradient(135deg, #6e8efb, #a777e3); /* Gradients similar to other pages */
+        height: 100vh;  /* Full height to make sure it looks good on all screen sizes */
     }
 
+    /* Card styling */
     .card {
-        border-radius: 15px;
+        border-radius: 20px;
         border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
+    /* Title styling */
     h1 {
         font-size: 2.5rem;
         color: #333;
+        font-weight: 600;
     }
 
+    /* Form label styling */
     label {
         font-weight: bold;
+        color: #333;
     }
 
+    /* Form input fields styling */
     input, select, textarea {
-        border: 2px solid #ddd !important;
-        border-radius: 10px !important;
-        padding: 15px !important;
-        font-size: 1rem !important;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
+    /* Button styling */
     button {
-        font-size: 1.2rem !important;
-        font-weight: bold !important;
-        transition: background-color 0.3s !important;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 12px;
+        transition: background-color 0.3s;
+        border-radius: 8px;
+        width: 100%;
     }
 
     button:hover {
-        background-color: #0056b3 !important;
+        background-color: #0056b3;
+        color: #fff;
     }
 
     button:focus {
-        outline: none !important;
+        outline: none;
     }
 
+    /* Form styling */
     form {
         display: flex;
         flex-direction: column;
     }
+
+    /* Form spacing */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
 </style>
 {% endblock %}

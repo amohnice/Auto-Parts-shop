@@ -4,36 +4,264 @@
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="text-center mb-4">Shopping Cart</h1>
+    <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h1 class="card-title text-center text-primary">Shopping Cart</h1>
 
-    {% if items %}
-    <ul class="list-group mb-4">
-        {% for item in items %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>{{ item.quantity }} x</strong> {{ item.part.name }}
-                    <br>
-                    <small>{{ item.part.price }} {{ item.part.currency }}</small>
+                    {% if items %}
+                    <ul class="list-group">
+                        {% for item in items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <!-- Cart Item Name and Price -->
+                                <div>
+                                    <h5 class="mb-0">{{ item.part.name }}</h5>
+                                    <small class="text-muted">{{ item.part.price }} {{ item.part.currency }}</small>
+                                </div>
+                                <!-- Quantity Dropdown -->
+                                <div class="ms-3">
+                                    <label>
+                                        <select class="form-select form-select-sm" onchange="updateQuantity({{ item.id }}, this.value)">
+                                            <option value="1" {% if item.quantity == 1 %}selected{% endif %}>1</option>
+                                            <option value="2" {% if item.quantity == 2 %}selected{% endif %}>2</option>
+                                            <option value="3" {% if item.quantity == 3 %}selected{% endif %}>3</option>
+                                            <option value="4" {% if item.quantity == 4 %}selected{% endif %}>4</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Remove Button with Icon -->
+                            <div>
+                                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm" title="Remove">
+                                    <i class="bi bi-trash"></i> Remove
+                                </a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0 text-primary">Total: </h4>
+                        <strong class="text-primary">{{ total_price }} {{ currency }}</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Continue Shopping</a>
+                        <a href="{% url 'order_summary' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
+                    </div>
+                    {% else %}
+                        <p class="text-center">Your cart is empty. Start adding items to it!</p>
+                    {% endif %}
                 </div>
-                <div>
-                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+            </div>
+        </div>
+
+        <!-- Cart Summary Sidebar -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Cart Summary</h4>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0">Subtotal:</p>
+                        <p class="mb-0">{{ total_price }} {{ currency }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0">Shipping:</p>
+                        <p class="mb-0">Free</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-0">Total:</h5>
+                        <h5 class="mb-0 text-success">{{ total_price }} {{ currency }}</h5>
+                    </div>
+                    <div class="d-flex justify-content-center mt-4">
+                        <a href="{% url 'order_summary' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
+                    </div>
                 </div>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <!-- Total price -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0">Total: </h4>
-        <strong>{{ total_price }} {{ currency }}</strong>
+            </div>
+        </div>
     </div>
-
-    <div class="d-flex justify-content-between">
-        <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Continue Shopping</a>
-        <a href="{% url 'order_summary' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
-    </div>
-    {% else %}
-        <p class="text-center">Your cart is empty. Start adding items to it!</p>
-    {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Styling for the Shopping Cart Page */
+    .text-primary {
+        color: #007bff !important;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .form-select {
+        width: 75px;
+    }
+
+    /* Card Styling */
+    .card {
+        border: 1px solid #ddd;
+    }
+
+    /* Dark Mode Enhancements */
+    body[data-theme="dark"] {
+        color: #eaeaea;
+    }
+
+    body[data-theme="dark"] .card-body {
+        background-color: #343a40;
+    }
+
+    body[data-theme="dark"] .list-group-item {
+        background-color: #495057;
+        color: #eaeaea;
+    }
+
+    body[data-theme="dark"] .list-group-item a {
+        color: #bb86fc; /* Make links visible in dark mode */
+    }
+
+    body[data-theme="dark"] .list-group-item a:hover {
+        color: #fff;
+    }
+
+    body[data-theme="dark"] .text-primary {
+        color: #bb86fc;
+    }
+
+    body[data-theme="dark"] .btn-primary {
+        background-color: #bb86fc;
+        border-color: #bb86fc;
+    }
+
+    body[data-theme="dark"] .btn-primary:hover {
+        background-color: #3700b3;
+        border-color: #3700b3;
+    }
+
+    body[data-theme="dark"] .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    body[data-theme="dark"] .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    body[data-theme="dark"] .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    body[data-theme="dark"] .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    /* Light Mode Styling */
+    body[data-theme="light"] {
+        color: #333;
+    }
+
+    body[data-theme="light"] .list-group-item {
+        background-color: #fff;
+        color: #333;
+    }
+
+    body[data-theme="light"] .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    body[data-theme="light"] .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    body[data-theme="light"] .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    body[data-theme="light"] .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    body[data-theme="light"] .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    body[data-theme="light"] .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    /* Animation for Hovering over List Items */
+    .list-group-item:hover {
+        transform: scale(1.02);
+        transition: transform 0.3s ease;
+    }
+
+    /* Modal styling */
+    .modal .modal-dialog {
+        max-width: 500px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Function to update quantity in the cart
+    function updateQuantity(itemId, newQuantity) {
+        fetch(`/update_cart_quantity/${itemId}/?quantity=${newQuantity}`, {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the subtotal and total prices dynamically
+                document.getElementById("totalPrice").innerText = data.total_price + " {{ currency }}";
+                document.getElementById("sidebarTotalPrice").innerText = data.total_price + " {{ currency }}";
+                document.getElementById("subtotal").innerText = data.subtotal + " {{ currency }}";
+                document.getElementById("sidebarSubtotal").innerText = data.subtotal + " {{ currency }}";
+            } else {
+                alert("There was an error updating the quantity: " + data.error);
+            }
+        });
+    }
+</script>
 {% endblock %}

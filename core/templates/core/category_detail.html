@@ -1,33 +1,149 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}{{ category.name }}{% endblock %}
 
 {% block content %}
-<h1 class="text-center">{{ category.name }}</h1>
-<p class="text-center">{{ category.description }}</p>
-<h2 class="my-4">Parts</h2>
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    {% if parts %}
-        {% for part in parts %}
-            <div class="col mb-4">
-                <div class="card h-100">
-                    {% if part.image %}
-                        <img src="{{ part.image.url }}" class="card-img-top img-fluid" alt="{{ part.name }}" style="max-height: 200px; object-fit: cover;">
-                    {% endif %}
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ part.name }}</h5>
-                        <p class="card-text">{{ part.price }} {{ part.currency }}</p>
-                        <a href="{% url 'part_detail' part.id %}" class="btn btn-primary mt-auto">View Details</a>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-3">{{ category.name }}</h1>
+    <p class="text-center mb-4">{{ category.description }}</p>
+
+    <h2 class="my-4 text-center">Available Parts</h2>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% if parts %}
+            {% for part in parts %}
+                <div class="col mb-4">
+                    <div class="card h-100 shadow-sm rounded-lg">
+                        {% if part.image %}
+                            <img src="{{ part.image.url }}" class="card-img-top img-fluid" alt="{{ part.name }}" style="max-height: 200px; object-fit: cover; transition: transform 0.3s ease;">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ part.name }}</h5>
+                            <p class="card-text">{{ part.price }} {{ part.currency }}</p>
+                            <a href="{% url 'part_detail' part.id %}" class="btn btn-primary mt-auto">View Details</a>
+                        </div>
                     </div>
                 </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center" role="alert">
+                    No parts available in this category.
+                </div>
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="col-12">
-            <div class="alert alert-info text-center" role="alert">
-                No parts available.
-            </div>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Card Hover Effects */
+    .card {
+        border: 1px solid var(--card-border-color);
+        background-color: var(--card-bg-color);
+        color: var(--card-text-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--card-text-color);
+        transition: color 0.3s ease;
+    }
+
+    .card-title:hover {
+        color: var(--link-color); /* Change color on hover */
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: var(--card-text-color);
+    }
+
+    .btn {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
+        border-radius: 5px;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--button-bg-hover-color);
+        color: var(--button-hover-text-color);
+        transform: scale(1.05); /* Slightly enlarge button on hover */
+    }
+
+    /* Image Hover Effect */
+    .card-img-top:hover {
+        transform: scale(1.05); /* Zoom effect on image hover */
+    }
+
+    /* Light Mode */
+    [data-theme="light"] {
+        --card-bg-color: #ffffff;
+        --card-text-color: #333;
+        --card-border-color: #ddd;
+        --button-bg-color: #007bff;
+        --button-text-color: #ffffff;
+        --button-bg-hover-color: #0056b3;
+        --button-hover-text-color: #ffffff;
+        --link-color: #007bff;
+    }
+
+    /* Dark Mode */
+    [data-theme="dark"] {
+        --card-bg-color: #2b2b2b;
+        --card-text-color: #e0e0e0;
+        --card-border-color: #444;
+        --button-bg-color: #1e90ff;
+        --button-text-color: #ffffff;
+        --button-bg-hover-color: #1c60c9;
+        --button-hover-text-color: #ffffff;
+        --link-color: #1e90ff;
+    }
+
+    /* Dark Mode Specific Adjustments */
+    [data-theme="dark"] .card {
+        background-color: var(--card-bg-color);
+        border-color: var(--card-border-color);
+    }
+
+    [data-theme="dark"] .card-title {
+        color: var(--card-text-color);
+    }
+
+    [data-theme="dark"] .card-text {
+        color: var(--card-text-color);
+    }
+
+    [data-theme="dark"] .btn-primary {
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
+    }
+
+    [data-theme="dark"] .btn-primary:hover {
+        background-color: var(--button-bg-hover-color);
+        color: var(--button-hover-text-color);
+    }
+
+</style>
 {% endblock %}

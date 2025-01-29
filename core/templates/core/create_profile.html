@@ -3,16 +3,81 @@
 {% block title %}Create Profile{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Create Profile</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% if form %}
-            {{ form.as_p }}
-        {% else %}
-            <p>No form available.</p>
-        {% endif %}
-        <button type="submit" class="btn btn-primary">Create Profile</button>
-    </form>
+<div class="container mt-5">
+    <div class="profile-container">
+        <h1 class="text-center mb-4">Create Your Profile</h1>
+
+        <!-- Form Section -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Display form fields -->
+            <div class="form-group">
+                {% if form %}
+                    {{ form.as_p }}
+                {% else %}
+                    <p>No form available.</p>
+                {% endif %}
+            </div>
+
+            <!-- Submit button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Create Profile</button>
+            </div>
+        </form>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Profile Container Styling */
+    .profile-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-container h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .profile-container input,
+    .profile-container select,
+    .profile-container textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .profile-container button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-radius: 8px;
+    }
+
+    .profile-container button:hover {
+        background-color: #0056b3;
+    }
+
+    .profile-container button:focus {
+        outline: none;
+    }
+</style>
 {% endblock %}

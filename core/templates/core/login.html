@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 bg-light">
-    <div class="card p-5 shadow-lg" style="width: 100%; max-width: 500px;">
+    <div class="card p-5 shadow-lg login-card">
         <h1 class="text-center mb-5">Login</h1>
         <form method="post" novalidate>
             {% csrf_token %}
@@ -17,48 +17,125 @@
 
 {% block extra_css %}
 <style>
+    /* Background Gradient */
     .container-fluid {
         background: linear-gradient(135deg, #6e8efb, #a777e3);
     }
 
-    .card {
-        border-radius: 15px;
+    /* Card Styling */
+    .login-card {
+        border-radius: 20px;
         border: none;
+        background-color: #fff;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .login-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
         font-size: 2.5rem;
         color: #333;
+        font-weight: 600;
     }
 
+    /* Form Elements Styling */
     label {
         font-weight: bold;
+        color: #333;
     }
 
     input, select, textarea {
-        border: 2px solid #ddd !important;
-        border-radius: 10px !important;
-        padding: 15px !important;
-        font-size: 1rem !important;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #6e8efb;
+        outline: none;
     }
 
     button {
-        font-size: 1.2rem !important;
-        font-weight: bold !important;
-        transition: background-color 0.3s !important;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        background-color: #6e8efb;
+        color: white;
+        border-radius: 5px;
+        padding: 15px;
     }
 
     button:hover {
-        background-color: #0056b3 !important;
+        background-color: #5a7de0;
     }
 
     button:focus {
-        outline: none !important;
+        outline: none;
     }
 
-    form {
-        display: flex;
-        flex-direction: column;
+    /* Light & Dark Mode Support */
+    /* Light Mode */
+    [data-theme="light"] {
+        .login-card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .container-fluid {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
     }
+
+    /* Dark Mode */
+    [data-theme="dark"] {
+        .container-fluid {
+            background: linear-gradient(135deg, #333, #555);
+        }
+
+        .login-card {
+            background-color: #2b2b2b;
+            color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #fff;
+        }
+
+        label {
+            color: #f9f9f9;
+        }
+
+        input, select, textarea {
+            background-color: #333;
+            border: 2px solid #444;
+            color: #f9f9f9;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #6e8efb;
+            outline: none;
+        }
+
+        button {
+            background-color: #6e8efb;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #5a7de0;
+        }
+    }
+
 </style>
 {% endblock %}

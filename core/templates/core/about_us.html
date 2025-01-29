@@ -5,15 +5,12 @@
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="text-center mb-4">About Us</h1>
+    <h1 class="text-center mb-4 text-primary">About Us</h1>
     <div class="row">
-        <div class="col-md-6">
-            <img src="{% static 'images/about-us.jpg' %}" class="img-fluid rounded shadow" alt="About Us Image">
-        </div>
-        <div class="col-md-6">
-            <p class="lead">Welcome to Auto Parts Shop, your number one source for all auto parts.</p>
-            <p>We're dedicated to giving you the very best of parts, with a focus on quality, customer service, and uniqueness. Founded in 2020, Auto Parts Shop has come a long way from its beginnings....</p>
-            <p>If you have any questions or comments, please don't hesitate to contact us. We're here to help.</p>
+        <div class="col-md-12">
+            <p class="lead text-center">Welcome to Auto Parts Shop, your number one source for all auto parts.</p>
+            <p>We're dedicated to giving you the very best of parts, with a focus on quality, customer service, and uniqueness. Founded in 2020, Auto Parts Shop has come a long way from its beginnings. Our goal is to provide reliable, high-quality parts to keep your vehicles running smoothly.</p>
+            <p>If you have any questions or comments, please don't hesitate to <a href="mailto:info@autopartsshop.com" class="text-primary">contact us</a>. We're here to help!</p>
         </div>
     </div>
 </div>
@@ -21,25 +18,62 @@
 
 {% block extra_css %}
 <style>
-    .about-us img {
-        width: 100%;
-        height: auto;
-        max-height: 400px; /* Ensures a consistent and balanced look */
-        object-fit: cover;
+    /* Container and Layout Styling */
+    .container {
+        padding: 40px 20px;
     }
 
+    /* Heading Styling */
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--navbar-text); /* Use theme's navbar-text color */
+        text-transform: uppercase;
+    }
+
+    /* Paragraph and Text Styling */
     .lead {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         font-weight: 300;
+        color: #444;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    p {
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.7;
         margin-bottom: 1rem;
     }
 
-    .rounded {
-        border-radius: .25rem;
+    p a {
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
     }
 
-    .shadow {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    p a:hover {
+        color: var(--navbar-link-hover); /* Hover effect on links */
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2rem; /* Make the heading smaller on mobile */
+        }
+
+        .lead {
+            font-size: 1.25rem; /* Slightly smaller lead text */
+        }
+
+        p {
+            font-size: 0.95rem; /* Slightly smaller paragraphs on mobile */
+        }
     }
 </style>
 {% endblock %}

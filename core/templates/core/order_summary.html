@@ -4,17 +4,183 @@
 {% block title %}Order Summary{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Order Summary</h1>
-        <ul>
-            {% for item in items %}
-                <li>
-                    {{ item.quantity }} x {{ item.part.name }} - {{ item.part.price }} {{ item.part.currency }}
-                </li>
-            {% endfor %}
-        </ul>
-        <h3>Total: {{ total }}</h3>
-        <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
-        <a href="{% url 'view_cart' %}" class="btn btn-secondary">Go Back to Cart</a>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Order Summary</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Order Items List -->
+                <ul class="list-group">
+                    {% for item in items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ item.quantity }} x</strong> {{ item.part.name }}
+                                <br>
+                                <small>{{ item.part.price }} {{ item.part.currency }}</small>
+                            </div>
+                            <div>
+                                <strong>{{ item.quantity }} * {{ item.part.price }} {{ item.part.currency }}</strong>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Subtotal Section -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <h4 class="mb-0">Subtotal:</h4>
+                    <strong>{{ subtotal }} {{ currency }}</strong>
+                </div>
+
+                <!-- Total Section -->
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <h4 class="mb-0">Total:</h4>
+                    <strong>{{ total }} {{ currency }}</strong>
+                </div>
+
+                <!-- Buttons Section -->
+                <div class="d-flex justify-content-between mt-4">
+                    <!-- Proceed to Checkout Button (Triggers Modal) -->
+                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                        Proceed to Checkout
+                    </button>
+                    <a href="{% url 'view_cart' %}" class="btn btn-secondary btn-lg">Go Back to Cart</a>
+                </div>
+            </div>
+
+            <!-- Sidebar (Optional) -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Summary</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Subtotal:</span> <strong>{{ subtotal }} {{ currency }}</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Total:</span> <strong>{{ total }} {{ currency }}</strong>
+                            </li>
+                        </ul>
+                        <!-- Checkout Button inside Sidebar (Triggers Modal) -->
+                        <button type="button" class="btn btn-primary btn-block mt-4" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Modal for Checkout -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'checkout' %}" method="post" id="payment-form">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">Phone Number:</label>
+                            <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount:</label>
+                            <input type="text" id="amount" name="amount" class="form-control" value="{{ total }}" readonly>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Submit Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Default Light Mode */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --link-color: #007bff;
+            --card-bg-color: #f8f9fa;
+            --card-text-color: #333;
+            --list-item-bg-color: #ffffff;
+            --list-item-text-color: #333;
+            --button-bg-color: #007bff;
+            --button-text-color: #ffffff;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --link-color: #1e90ff;
+            --card-bg-color: #2b2b2b;
+            --card-text-color: #e0e0e0;
+            --list-item-bg-color: #333;
+            --list-item-text-color: #e0e0e0;
+            --button-bg-color: #1e90ff;
+            --button-text-color: #ffffff;
+        }
+
+        /* Body and Background */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Links */
+        a {
+            color: var(--link-color);
+        }
+
+        /* List Items */
+        .list-group-item {
+            background-color: var(--list-item-bg-color);
+            color: var(--list-item-text-color);
+        }
+
+        /* Card */
+        .card {
+            background-color: var(--card-bg-color);
+            color: var(--card-text-color);
+        }
+
+        /* Button */
+        .btn-primary {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+
+        /* Subtotal & Total */
+        strong {
+            color: var(--text-color);
+        }
+
+        /* Modify sections to ensure readability */
+        h1, h4 {
+            color: var(--text-color);
+        }
+
+        /* List group text for dark mode */
+        [data-theme="dark"] .list-group-item {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] .card {
+            background-color: #2b2b2b;
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background-color: #1e90ff;
+            color: white;
+        }
+
+    </style>
 {% endblock %}

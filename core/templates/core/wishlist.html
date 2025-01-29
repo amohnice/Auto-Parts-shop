@@ -6,25 +6,111 @@
 <div class="container mt-5">
     <div class="card shadow-sm">
         <div class="card-body">
-            <h1 class="card-title text-center">Wishlist</h1>
+            <h1 class="card-title text-center text-primary">Wishlist</h1>
             <ul class="list-group list-group-flush mt-4">
                 {% if wishlist_items %}
                     {% for item in wishlist_items %}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <h5>{{ item.part.name }}</h5>
-                                <p class="mb-0">{{ item.part.price }} {{ item.part.currency }}</p>
+                                <h5 class="mb-0">{{ item.part.name }}</h5>
+                                <p class="text-muted">{{ item.part.price }} {{ item.part.currency }}</p>
                             </div>
                             <a href="{% url 'remove_from_wishlist' item.id %}" class="btn btn-danger btn-sm">Remove</a>
                         </li>
                     {% endfor %}
                 {% else %}
                     <li class="list-group-item text-center">
-                        Your wishlist is empty.
+                        Your wishlist is empty. <a href="{% url 'index' %}" class="btn btn-link">Browse Products</a>
                     </li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* General Styles */
+    .card-body {
+        padding: 2rem;
+    }
+
+    .list-group-item {
+        border: 1px solid #ddd;
+        margin-bottom: 0.5rem;
+    }
+
+    .list-group-item h5 {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .list-group-item p {
+        font-size: 1rem;
+        color: #6c757d; /* Muted color for the price */
+    }
+
+    /* Button Link and Remove Button */
+    .btn-danger:hover {
+        background-color: #dc3545;
+        border-color: #c82333;
+    }
+
+    .btn-link {
+        text-decoration: underline;
+        color: #007bff; /* Consistent button link color */
+    }
+
+    /* Dark Mode Specific Styles */
+    body[data-theme="dark"] {
+        color: #eaeaea; /* Default text color in dark mode */
+    }
+
+    body[data-theme="dark"] .card-body {
+        background-color: #343a40; /* Card background in dark mode */
+    }
+
+    body[data-theme="dark"] .list-group-item {
+        background-color: #495057; /* List item background in dark mode */
+        color: #eaeaea; /* Text color for list items */
+    }
+
+    body[data-theme="dark"] .card-title,
+    body[data-theme="dark"] .list-group-item h5 {
+        color: #1e90ff; /* Heading and title color in dark mode */
+    }
+
+    body[data-theme="dark"] .list-group-item p {
+        color: #ccc; /* Price text color in dark mode */
+    }
+
+    body[data-theme="dark"] .btn-link {
+        color: #007bff; /* Button link color in dark mode */
+    }
+
+    /* Light Mode Specific Styles */
+    body[data-theme="light"] {
+        color: #333; /* Default text color for light mode */
+    }
+
+    body[data-theme="light"] .list-group-item {
+        background-color: #fff; /* Light background for list items */
+        color: #333; /* Text color for list items */
+    }
+
+    body[data-theme="light"] .card-body {
+        background-color: #f8f9fa; /* Light background for card body */
+    }
+
+    body[data-theme="light"] .card-title,
+    body[data-theme="light"] .list-group-item h5 {
+        color: #007bff; /* Heading and title color in light mode */
+    }
+
+    body[data-theme="light"] .list-group-item p {
+        color: #6c757d; /* Price text color for light mode */
+    }
+
+</style>
 {% endblock %}

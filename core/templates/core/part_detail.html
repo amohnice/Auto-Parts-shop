@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% load custom_filters %}
 
 {% block title %}{{ part.name }}{% endblock %}
 
 {% block content %}
+<!-- Hero Section with Background Image and Title -->
+<div class="hero-section">
+    <h1>{{ part.name }}</h1>
+    <p>Explore detailed information about this part</p>
+</div>
+
+<!-- Product Detail Section -->
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-6">
@@ -25,11 +32,12 @@
         </div>
     </div>
 
+    <!-- Reviews Section -->
     <div class="mt-5">
         <h2>Reviews</h2>
         <ul class="list-group mb-4">
             {% for review in reviews %}
-                <li class="list-group-item">
+                <li class="list-group-item review-item">
                     <div class="d-flex w-100 justify-content-between align-items-center">
                         <h5 class="mb-1">{{ review.user.username }}</h5>
                         <small class="text-muted">{{ review.created_at }}</small>
@@ -64,25 +72,72 @@
 
 {% block extra_css %}
 <style>
+    /* Hero Section Styling */
+    .hero-section {
+        background: url({% static 'images/hero-image.jpg' %}) no-repeat center center;
+        background-size: cover;
+        height: 60vh;
+        color: white;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-section h1 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-section p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .hero-section .btn {
+        font-size: 1.2rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.25rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .hero-section .btn:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: var(--link-color);
+    }
+
+    /* Image Styling */
     .uniform-image {
         width: 100%;
-        height: 400px; /* Adjust the height as needed */
-        object-fit: cover; /* Ensures the image covers the area without distortion */
+        height: 400px;
+        object-fit: cover;
         margin-bottom: 20px;
+        transition: transform 0.3s ease;
     }
 
-    .container {
-        max-width: 1200px;
+    .uniform-image:hover {
+        transform: scale(1.05);
     }
 
-    .btn-group .btn {
-        margin-right: 10px;
+    /* Button Hover Effects */
+    .btn-primary {
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
     }
 
-    .display-4 {
-        margin-bottom: 20px;
+    .btn-primary:hover {
+        background-color: var(--button-bg-hover-color);
+        color: var(--button-hover-text-color);
+        transform: scale(1.05);
     }
 
+    /* Review Styling */
     .list-group-item {
         border: 1px solid #ddd;
         border-radius: 5px;
@@ -92,37 +147,73 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    .list-group-item h5 {
+    .review-item {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .review-item h5 {
         font-size: 1.25rem;
     }
 
-    .list-group-item small {
+    .review-item small {
         font-size: 0.875rem;
     }
 
-    .list-group-item p {
+    .review-item p {
         font-size: 1rem;
         margin-bottom: 0.5rem;
     }
 
-    .needs-validation {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 20px;
-        background-color: #f9f9f9;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .needs-validation button {
-        margin-top: 10px;
-    }
-
+    /* Star Rating */
     .fa-star {
         color: #ffd700;
     }
 
     .fa-star.checked {
         color: #ffd700;
+    }
+
+    /* Light Mode */
+    [data-theme="light"] {
+        --button-bg-color: #007bff;
+        --button-text-color: #ffffff;
+        --button-bg-hover-color: #0056b3;
+        --button-hover-text-color: #ffffff;
+        --link-color: #007bff;
+    }
+
+    /* Dark Mode */
+    [data-theme="dark"] {
+        --button-bg-color: #1e90ff;
+        --button-text-color: #ffffff;
+        --button-bg-hover-color: #1c60c9;
+        --button-hover-text-color: #ffffff;
+        --link-color: #1e90ff;
+
+        .review-item {
+            background-color: #2b2b2b;  /* Darker background for reviews */
+            color: #f9f9f9;  /* Light text color */
+        }
+
+        .review-item h5 {
+            color: #ffde59;  /* Light color for username in dark mode */
+        }
+
+        .review-item small {
+            color: #bbb;  /* Lighter color for timestamps in dark mode */
+        }
+
+        .review-item p {
+            color: #ccc;  /* Lighter comment text in dark mode */
+        }
+
+        .fa-star {
+            color: #ffd700;  /* Gold stars for ratings */
+        }
+
+        .fa-star.checked {
+            color: #ffd700;
+        }
     }
 </style>
 {% endblock %}
