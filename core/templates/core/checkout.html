@@ -99,101 +99,100 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
-    <!-- Modal Styling -->
-    <style>
-        /* Modal Styling */
-        .modal-content {
-            background-color: var(--card-bg-color);
-            color: var(--card-text-color);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+{% block extra_css %}
+<style>
+    /* Modal Styling */
+    .modal-content {
+        background-color: var(--card-bg-color);
+        color: var(--card-text-color);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        .modal-header {
-            border-bottom: 1px solid var(--link-color);
-            padding: 1rem;
-        }
+    .modal-header {
+        border-bottom: 1px solid var(--link-color);
+        padding: 1rem;
+    }
 
-        .modal-header .btn-close {
-            background-color: var(--link-color);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            padding: 5px;
-        }
+    .modal-header .btn-close {
+        background-color: var(--link-color);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+    }
 
-        .modal-body {
-            padding: 2rem;
-        }
+    .modal-body {
+        padding: 2rem;
+    }
 
-        .form-label {
-            color: var(--text-color);
-        }
+    .form-label {
+        color: var(--text-color);
+    }
 
-        .form-control {
-            background-color: var(--list-item-bg-color);
-            color: var(--text-color);
-            border: 1px solid var(--link-color);
-            border-radius: 5px;
-        }
+    .form-control {
+        background-color: var(--list-item-bg-color);
+        color: var(--text-color);
+        border: 1px solid var(--link-color);
+        border-radius: 5px;
+    }
 
-        .btn-primary {
-            background-color: var(--button-bg-color);
-            color: var(--button-text-color);
-            border-radius: 5px;
-        }
+    .btn-primary {
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
+        border-radius: 5px;
+    }
 
-        .btn-primary:hover {
-            background-color: #0056b3; /* Slightly darker shade of the button color */
-            filter: brightness(85%);
-        }
+    .btn-primary:hover {
+        background-color: var(--button-bg-hover-color);
+        filter: brightness(85%);
+    }
 
-        .btn-secondary {
-            background-color: #6c757d;
-            color: #ffffff;
-            border-radius: 5px;
-        }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #ffffff;
+        border-radius: 5px;
+    }
 
-        /* Button Full Width */
-        .w-100 {
-            width: 100%;
-        }
+    /* Button Full Width */
+    .w-100 {
+        width: 100%;
+    }
 
-        /* Ensure that dark mode has proper visibility */
-[data-theme="dark"] .modal-content {
-    background-color: #2b2b2b; /* Dark background for dark mode */
-    color: #e0e0e0; /* Light text for readability */
-}
+    /* Dark Mode Enhancements */
+    [data-theme="dark"] .modal-content {
+        background-color: #2b2b2b; /* Dark background for dark mode */
+        color: #e0e0e0; /* Light text for readability */
+    }
 
-[data-theme="dark"] .modal-header {
-    border-bottom: 1px solid #1e90ff; /* Lighter border for dark mode */
-}
+    [data-theme="dark"] .modal-header {
+        border-bottom: 1px solid #1e90ff; /* Lighter border for dark mode */
+    }
 
-[data-theme="dark"] .form-label {
-    color: #e0e0e0; /* Lighter label color for dark mode */
-}
+    [data-theme="dark"] .form-label {
+        color: #e0e0e0; /* Lighter label color for dark mode */
+    }
 
-[data-theme="dark"] .form-control {
-    background-color: #333333; /* Darker background for inputs in dark mode */
-    color: #e0e0e0; /* Light text for inputs in dark mode */
-    border: 1px solid #1e90ff; /* Lighter border for inputs */
-}
+    [data-theme="dark"] .form-control {
+        background-color: #333333; /* Darker background for inputs in dark mode */
+        color: #e0e0e0; /* Light text for inputs in dark mode */
+        border: 1px solid #1e90ff; /* Lighter border for inputs */
+    }
 
-[data-theme="dark"] .btn-primary {
-    background-color: #1e90ff; /* Lighter blue for dark mode buttons */
-    color: #ffffff;
-}
+    [data-theme="dark"] .btn-primary {
+        background-color: #1e90ff; /* Lighter blue for dark mode buttons */
+        color: #ffffff;
+    }
 
-[data-theme="dark"] .btn-primary:hover {
-    background-color: #1c60c9; /* Slightly darker blue for hover */
-}
+    [data-theme="dark"] .btn-primary:hover {
+        background-color: #1c60c9; /* Slightly darker blue for hover */
+    }
 
-[data-theme="dark"] .btn-secondary {
-    background-color: #6c757d;
-    color: #ffffff;
-}
-
-    </style>
-
+    [data-theme="dark"] .btn-secondary {
+        background-color: #6c757d;
+        color: #ffffff;
+    }
+</style>
 {% endblock %}

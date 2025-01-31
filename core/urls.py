@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from .views import ProfileUpdateView, profile_view
+from .views import ProfileUpdateView, profile_view, test_environment
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -30,4 +30,7 @@ urlpatterns = [
     path('profile/create/', views.create_profile, name='create_profile'),
     path('profile/update/', ProfileUpdateView.as_view(), name='profile_update'),
     path('about/', views.about_us, name='about_us'),
+
+    #     test environment
+    path('test-environment/', test_environment, name='test_environment'),
 ]

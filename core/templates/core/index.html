@@ -36,11 +36,10 @@
 {% block extra_css %}
 <style>
     :root {
-        --button-bg-color: #007bff;  /* Default button background color */
-        --button-bg-hover-color: #3700b3; /* Hover background color */
+        --button-bg-color: #776e62;  /* Default button background color */
+        --button-bg-hover-color: #5a5248; /* Hover background color */
         --button-text-color: #ffffff; /* Default button text color */
         --button-hover-text-color: #ffffff; /* Hover button text color */
-        --link-color: #007bff;  /* Default link color */
         --card-bg-color: #ffffff;  /* Default card background */
         --card-text-color: #333333; /* Default card text color */
         --text-color: #333; /* Default text color */
@@ -64,13 +63,13 @@
     .hero-section h1 {
         font-size: 4rem;
         margin-bottom: 1rem;
-        color: var(--text-color);
+        color: #ffffff;
     }
 
     .hero-section p {
         font-size: 1.5rem;
         margin-bottom: 2rem;
-        color: var(--text-color);
+        color: #ffffff;
     }
 
     .hero-section .btn {
@@ -87,7 +86,7 @@
 
     .hero-section .btn:hover {
         background-color: rgba(255, 255, 255, 0.9);
-        color: var(--link-color);  /* Highlight the link color on hover */
+        color: var(--button-text-color);
     }
 
     /* Categories Section */
@@ -120,34 +119,82 @@
         color: var(--card-text-color);
     }
 
+    /* Button Styles */
     .btn {
         text-transform: uppercase;
         letter-spacing: 1px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
     }
 
     .btn-primary {
-        background-color: var(--button-bg-color);
+        position: relative;
+        padding: 1rem 2rem;
         color: var(--button-text-color);
-        border-radius: 5px;
-        transition: all 0.3s ease;
+        background-color: var(--button-bg-color);
+        border: 3px solid var(--button-bg-color);
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 100%;
+        z-index: -1;
+        height: 120%;
+        width: 120%;
+        background-color: var(--button-bg-hover-color);
+        border-right: 3px solid var(--button-bg-hover-color);
+        border-bottom: 3px solid var(--button-bg-hover-color);
+        transition: all 0.3s ease-in-out;
     }
 
     .btn-primary:hover {
-        background-color: var(--button-bg-hover-color);  /* Make hover color more noticeable */
         color: var(--button-hover-text-color);
+        border-color: var(--button-bg-hover-color);
+    }
+
+    .btn-primary:hover::before {
+        top: 0;
+        left: 0;
+        background-color: var(--button-bg-hover-color);
+        border-color: var(--button-bg-hover-color);
     }
 
     .btn-lg {
         padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
     }
 
+    /* Responsive Design */
     @media (max-width: 768px) {
         .card-img-top {
             height: 200px;
         }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+        }
     }
 
     /* Dark Mode Styles */
+    [data-theme="dark"] {
+        --button-bg-color: #5a5248;  /* Dark mode button background color */
+        --button-bg-hover-color: #776e62; /* Dark mode hover background color */
+        --button-text-color: #ffffff; /* Dark mode button text color */
+        --button-hover-text-color: #ffffff; /* Dark mode hover button text color */
+        --card-bg-color: #2b2b2b;  /* Dark mode card background */
+        --card-text-color: #e0e0e0; /* Dark mode card text color */
+        --text-color: #e0e0e0; /* Dark mode text color */
+    }
+
     [data-theme="dark"] .hero-section {
         color: #e0e0e0;  /* Light text color for dark mode */
     }
@@ -158,44 +205,34 @@
     }
 
     [data-theme="dark"] .card {
-        background-color: #2b2b2b;
-        color: #e0e0e0;
+        background-color: var(--card-bg-color);
+        color: var(--card-text-color);
         border: 1px solid #444;
     }
 
     [data-theme="dark"] .card-title {
-        color: #e0e0e0;
-    }
-
-    [data-theme="dark"] .card-text {
-        color: #e0e0e0;
-    }
-
-    [data-theme="dark"] .btn-primary {
-        background-color: #1e90ff;  /* Lighter blue for dark mode buttons */
-        color: #ffffff;
-    }
-
-    [data-theme="dark"] .btn-primary:hover {
-        background-color: #1c60c9;  /* Slightly darker blue for hover */
-        color: #ffffff;
-    }
-
-    /* Additional Dark Mode Styles */
-    [data-theme="dark"] .card-body {
-        background-color: #333;
-        color: #e0e0e0;
-    }
-
-    /* Light Mode */
-    [data-theme="light"] .card {
-        background-color: var(--card-bg-color);
         color: var(--card-text-color);
     }
 
-    /* Button Hover Color Consistency */
-    [data-theme="light"] .btn-primary:hover {
+    [data-theme="dark"] .card-text {
+        color: var(--card-text-color);
+    }
+
+    [data-theme="dark"] .btn-primary {
+        background-color: var(--button-bg-color);
+        border-color: var(--button-bg-color);
+        color: var(--button-text-color);
+    }
+
+    [data-theme="dark"] .btn-primary::before {
         background-color: var(--button-bg-hover-color);
+        border-color: var(--button-bg-hover-color);
+    }
+
+    [data-theme="dark"] .btn-primary:hover {
+        background-color: var(--button-bg-hover-color);
+        border-color: var(--button-bg-hover-color);
+        color: var(--button-hover-text-color);
     }
 </style>
 {% endblock %}

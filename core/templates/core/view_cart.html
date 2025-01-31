@@ -35,7 +35,7 @@
                             </div>
                             <!-- Remove Button with Icon -->
                             <div>
-                                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm" title="Remove">
+                                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm" title="Remove" aria-label="Remove">
                                     <i class="bi bi-trash"></i> Remove
                                 </a>
                             </div>
@@ -45,7 +45,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="mb-0 text-primary">Total: </h4>
-                        <strong class="text-primary">{{ total_price }} {{ currency }}</strong>
+                        <strong class="text-primary" id="totalPrice">{{ total_price }} {{ currency }}</strong>
                     </div>
 
                     <div class="d-flex justify-content-between">
@@ -67,7 +67,7 @@
                     <hr>
                     <div class="d-flex justify-content-between">
                         <p class="mb-0">Subtotal:</p>
-                        <p class="mb-0">{{ total_price }} {{ currency }}</p>
+                        <p class="mb-0" id="subtotal">{{ total_price }} {{ currency }}</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="mb-0">Shipping:</p>
@@ -76,7 +76,7 @@
                     <hr>
                     <div class="d-flex justify-content-between">
                         <h5 class="mb-0">Total:</h5>
-                        <h5 class="mb-0 text-success">{{ total_price }} {{ currency }}</h5>
+                        <h5 class="mb-0 text-success" id="sidebarTotalPrice">{{ total_price }} {{ currency }}</h5>
                     </div>
                     <div class="d-flex justify-content-center mt-4">
                         <a href="{% url 'order_summary' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
@@ -190,55 +190,10 @@
         border-color: #1e7e34;
     }
 
-    /* Light Mode Styling */
-    body[data-theme="light"] {
-        color: #333;
-    }
-
-    body[data-theme="light"] .list-group-item {
-        background-color: #fff;
-        color: #333;
-    }
-
-    body[data-theme="light"] .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-
-    body[data-theme="light"] .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #0056b3;
-    }
-
-    body[data-theme="light"] .btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-    }
-
-    body[data-theme="light"] .btn-danger:hover {
-        background-color: #c82333;
-        border-color: #bd2130;
-    }
-
-    body[data-theme="light"] .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-
-    body[data-theme="light"] .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
-    }
-
     /* Animation for Hovering over List Items */
     .list-group-item:hover {
         transform: scale(1.02);
         transition: transform 0.3s ease;
-    }
-
-    /* Modal styling */
-    .modal .modal-dialog {
-        max-width: 500px;
     }
 </style>
 {% endblock %}

@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="{% if request.COOKIES.theme == 'dark' %}dark{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,6 +73,13 @@
 
         [data-theme="dark"] .navbar-brand {
             color: var(--navbar-brand-color);
+        }
+
+        /* Dark Mode Navbar Brand Hover */
+        [data-theme="dark"] .navbar-brand:hover {
+            color: #ffffff; /* Lighter color for hover */
+            font-weight: bold; /* Make it bold on hover */
+            text-decoration: underline; /* Optional: Adds an underline on hover */
         }
 
         .navbar-brand img {
@@ -174,13 +180,18 @@
 
         /* Search Bar Styling */
         .search-bar {
-            display: none;
+            display: none; /* Initially hidden */
             position: absolute;
             top: 50px; /* Position just below the search icon */
             right: 0;
             width: 250px;
+            background-color: var(--navbar-bg); /* Match navbar background */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease-in-out;
             opacity: 0;
+            z-index: 999; /* Ensure it's on top */
         }
 
         .search-bar input {
@@ -188,6 +199,14 @@
             padding: 10px 20px;
             border-radius: 30px;
             border: 1px solid var(--navbar-link-hover);
+            background-color: var(--background-color); /* Match body background */
+            color: var(--text-color); /* Match text color */
+        }
+
+        /* Dark Mode Navbar Link Hover */
+        [data-theme="dark"] .nav-item .nav-link:hover {
+            color: #ffffff; /* Use white or a lighter color for better visibility */
+            text-decoration: underline; /* Optional: to make it more visually distinct */
         }
 
         /* Dark Mode Search Bar Styling */
@@ -357,38 +376,63 @@
 
     <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // Theme Toggle
-        const themeToggleButton = document.getElementById('themeToggle');
-        const bodyElement = document.body;
+// Theme Toggle
+const themeToggleButton = document.getElementById('themeToggle');
+const bodyElement = document.body;
 
-        themeToggleButton.addEventListener('click', () => {
-            if (bodyElement.getAttribute('data-theme') === 'dark') {
-                bodyElement.removeAttribute('data-theme');
-            } else {
-                bodyElement.setAttribute('data-theme', 'dark');
-            }
-        });
+// Check local storage for theme preference on page load
+if (localStorage.getItem('theme') === 'dark') {
+    bodyElement.setAttribute('data-theme', 'dark');
+}
 
-        // Toggle Search Bar
-        const searchIcon = document.getElementById('searchIcon');
-        const searchBar = document.getElementById('searchBar');
+themeToggleButton.addEventListener('click', () => {
+    if (bodyElement.getAttribute('data-theme') === 'dark') {
+        bodyElement.removeAttribute('data-theme');
+        localStorage.removeItem('theme');  // Remove from localStorage when switching to light mode
+    } else {
+        bodyElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');  // Save to localStorage when switching to dark mode
+    }
+});
 
-        searchIcon.addEventListener('click', () => {
-            searchBar.classList.toggle('active');
-            // Focus input when search bar appears
-            if (searchBar.classList.contains('active')) {
-                searchBar.querySelector('input').focus();
-            }
-        });
 
-        // Close search bar when clicking outside
-        document.addEventListener('click', (event) => {
-            if (!searchBar.contains(event.target) && !searchIcon.contains(event.target)) {
-                searchBar.classList.remove('active');
-            }
+// Toggle Search Bar
+const searchIcon = document.getElementById('searchIcon');
+const searchBar = document.getElementById('searchBar');
+
+searchIcon.addEventListener('click', (event) => {
+    console.log('Search icon clicked'); // Debugging
+    event.stopPropagation(); // Prevent the click event from bubbling up
+    if (searchBar.style.display === 'none' || searchBar.style.display === '') {
+        searchBar.style.display = 'block'; // Show the search bar
+        searchBar.style.opacity = 1; // Make sure opacity is set to 1
+        searchBar.querySelector('input').focus(); // Focus the input field
+    } else {
+        searchBar.style.display = 'none'; // Hide the search bar
+        searchBar.style.opacity = 0; // Fade the search bar out
+    }
+});
+
+// Close search bar when clicking outside
+document.addEventListener('click', (event) => {
+    if (!searchBar.contains(event.target) && !searchIcon.contains(event.target)) {
+        searchBar.style.display = 'none'; // Hide the search bar
+        searchBar.style.opacity = 0; // Fade the search bar out
+    }
+});
+
+
+        $(function() {
+            $("#id_query").autocomplete({
+                source: "{% url 'autocomplete' %}",  // Ensure this points to the correct view
+                minLength: 2,  // Start showing suggestions after typing 2 characters
+            });
         });
 
         $(document).ready(function() {

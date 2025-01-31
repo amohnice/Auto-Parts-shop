@@ -135,14 +135,20 @@ LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# M-pesa integration
-DARAJA_CONSUMER_KEY = 'zKgalXYhGN3AphXuNPHAk7QetzcgxkiYrgz9IyuFEpw7s7w8'
-DARAJA_CONSUMER_SECRET = 'R4V7jMqRJ8O9JvKSJohD3zVwRcQUReeWC7jjjPOg7nAdTRyzbE4oGDRaB7ZQOgUW'
-DARAJA_SHORTCODE = '174379'
-DARAJA_LIPA_NA_MPESA_ONLINE_SHORTCODE = '174379'
-DARAJA_LIPA_NA_MPESA_ONLINE_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
-DARAJA_ENVIRONMENT = 'sandbox'  # Use 'sandbox' for the testing environment
-DARAJA_CALLBACK_URL = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
+
+DARAJA_CONSUMER_KEY = os.getenv('DARAJA_CONSUMER_KEY')
+DARAJA_CONSUMER_SECRET = os.getenv('DARAJA_CONSUMER_SECRET')
+DARAJA_SHORTCODE = os.getenv('DARAJA_SHORTCODE')
+DARAJA_LIPA_NA_MPESA_ONLINE_SHORTCODE = os.getenv('DARAJA_LIPA_NA_MPESA_ONLINE_SHORTCODE')
+DARAJA_LIPA_NA_MPESA_ONLINE_PASSKEY = os.getenv('DARAJA_LIPA_NA_MPESA_ONLINE_PASSKEY')
+DARAJA_ENVIRONMENT = os.getenv('DARAJA_ENVIRONMENT', 'sandbox')  # Default to 'sandbox' if not found
+DARAJA_CALLBACK_URL = os.getenv('DARAJA_CALLBACK_URL')
+# Add MPESA_PASSKEY retrieval here
+MPESA_PASSKEY = os.getenv('DARAJA_LIPA_NA_MPESA_ONLINE_PASSKEY')
 
 # settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login
 from .forms import PartForm, SearchForm, UserProfileForm, ReviewForm, FilterForm
 from django_daraja.mpesa.core import MpesaClient
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json, logging
 logger = logging.getLogger(__name__)
 from django.core.mail import send_mail
@@ -99,21 +99,22 @@ def update_cart_quantity(request, item_id):
         # Get the new quantity from the GET request
         quantity = int(request.GET.get('quantity'))
 
-        # Update the cart item in the database or session
-        cart_item = CartItem.objects.get(id=item_id, user=request.user)
-        cart_item.quantity = quantity
+        # Update the cart item in the database
+        cart_item = CartItem.objects.get(id=item_id, cart__user=request.user)  # Use cart__user to filter by user
+        cart_item.quantity = quantity  # Use the `quantity` variable here
         cart_item.save()
 
         # Recalculate the total price for the cart
-        cart_items = CartItem.objects.filter(user=request.user)
+        cart_items = CartItem.objects.filter(cart__user=request.user)  # Filter by cart's user
         total_price = sum(item.quantity * item.part.price for item in cart_items)
         subtotal = sum(item.quantity * item.part.price for item in cart_items)
 
         # Return the updated totals
         return JsonResponse({'success': True, 'total_price': total_price, 'subtotal': subtotal})
+    except CartItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Cart item not found'})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
-
 
 @login_required
 def remove_from_cart(request, item_id):
@@ -148,22 +149,27 @@ def search(request):
 
     return render(request, 'core/search.html', {'form': form, 'filter_form': filter_form, 'results': results})
 
-
 def checkout(request):
     logger.info("MPESA_ENVIRONMENT: {os.environ.get('DARAJA_ENVIRONMENT')}")
     logger.info("CONSUMER_KEY: {os.environ.get('DARAJA_CONSUMER_KEY')}")
+
+    # Ensure the cart is fetched correctly
     cart, created = Cart.objects.get_or_create(user=request.user)
-    total = sum(item.part.price * item.quantity for item in cart.cartitem_set.all())
-    total = int(total)
+
+    # Access cart items through the 'items' related name
+    total = sum(item.part.price * item.quantity for item in cart.items.all())
+    total = int(total)  # Convert to integer for Mpesa amount
+
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number')
         # amount = request.POST.get('amount')
-        # amount = int(float(amount))
+        # amount = int(float(amount))  # Uncomment if you want to accept dynamic amount
+
         account_reference = 'Order Payment'
         transaction_desc = 'Payment for order'
         callback_url = 'https://yourdomain.com/mpesa/callback/'
 
-        mpesa_client = MpesaClient()
+        mpesa_client = MpesaClient()  # Assuming you've defined this client somewhere
         response = mpesa_client.stk_push(
             phone_number=phone_number,
             amount=total,
@@ -172,6 +178,7 @@ def checkout(request):
             callback_url=callback_url
         )
 
+        # Create a transaction record
         transaction = Transaction.objects.create(
             user=request.user,
             phone_number=phone_number,
@@ -179,12 +186,16 @@ def checkout(request):
             checkout_request_id=response.checkout_request_id,
             status='PENDING'
         )
-        # Send order confirmation email
+
+        # Send order confirmation email (assuming the function is defined)
         send_order_confirmation(request.user)
 
+        # Return a JSON response with the transaction ID
         return JsonResponse({'status': 'success', 'transaction_id': transaction.id})
 
-    return render(request, 'core/checkout.html')
+    # Render the checkout page
+    return render(request, 'core/checkout.html', {'cart_items': cart.items.all(), 'total': total})
+
 
 @csrf_exempt
 def mpesa_callback(request):
@@ -310,13 +321,16 @@ def remove_from_wishlist(request, item_id):
 
     return redirect('wishlist')
 
+# Autocomplete View
 def autocomplete(request):
     if 'term' in request.GET:
-        qs = Part.objects.filter(name__icontains=request.GET.get('term'))
-        names = list()
-        for part in qs:
-            names.append(part.name)
-        return JsonResponse(names, safe=False)
+        query = request.GET.get('term')
+        qs = Part.objects.filter(name__icontains=query)[:10]  # Get matching parts
+
+        # Return matching parts as a list of dictionaries with 'label' and 'value'
+        results = [{'label': part.name, 'value': part.name} for part in qs]
+
+        return JsonResponse(results, safe=False)
     return JsonResponse([], safe=False)
 
 def about_us(request):
@@ -324,3 +338,13 @@ def about_us(request):
 
 def logged_out(request):
     return render(request, 'core/logged_out.html')
+
+
+# Test environment
+import os
+
+def test_environment(request):
+    # Print environment variables
+    print("MPESA Environment:", os.getenv('DARAJA_ENVIRONMENT'))
+    print("Consumer Key:", os.getenv('DARAJA_CONSUMER_KEY'))
+    return HttpResponse("Environment variables printed to the console.")

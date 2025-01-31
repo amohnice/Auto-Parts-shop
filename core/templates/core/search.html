@@ -10,7 +10,7 @@
     <form method="get" action="{% url 'search' %}">
         <div class="form-group">
             <label for="id_query">Search:</label>
-            {{ form.query }}
+            <input class="form-control" type="search" name="query" id="id_query" placeholder="Search parts" aria-label="Search" value="{{ request.GET.query }}">
         </div>
 
         <h3>Filters</h3>
@@ -38,8 +38,22 @@
 <script>
     $(function() {
         $("#id_query").autocomplete({
-            source: "{% url 'autocomplete' %}",
-            minLength: 2,  // Start showing suggestions after typing 2 characters
+            source: function(request, response) {
+                $.ajax({
+                    url: "{% url 'autocomplete' %}",
+                    data: { term: request.term },  // Send the search query as 'term'
+                    success: function(data) {
+                        // Parse the response into a format that jQuery UI Autocomplete expects
+                        response($.map(data, function(item) {
+                            return {
+                                label: item.label,  // The text to display in the dropdown
+                                value: item.value   // The value to fill the input field
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 2,  // Minimum number of characters before showing suggestions
         });
     });
 </script>
