@@ -5,7 +5,7 @@
 {% block title %}{{ part.name }}{% endblock %}
 
 {% block content %}
-<!-- Hero Section with Background Image and Title -->
+<!-- Hero Section with Background and Title -->
 <div class="hero-section">
     <h1>{{ part.name }}</h1>
     <p>Explore detailed information about this part</p>
@@ -33,7 +33,7 @@
     </div>
 
     <!-- Reviews Section -->
-    <div class="mt-5">
+    <div class="mt-4">
         <h2>Reviews</h2>
         <ul class="list-group mb-4">
             {% for review in reviews %}
@@ -64,7 +64,7 @@
         <form method="post" class="needs-validation" novalidate>
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Submit Review</button>
+            <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>  <!-- Smaller button -->
         </form>
     </div>
 </div>
@@ -74,10 +74,8 @@
 <style>
     /* Hero Section Styling */
     .hero-section {
-        background: url({% static 'images/hero-image.jpg' %}) no-repeat center center;
         background-size: cover;
-        height: 60vh;
-        color: white;
+        height: 40vh;  /* Reduced height */
         text-align: center;
         display: flex;
         align-items: center;
@@ -88,18 +86,18 @@
     }
 
     .hero-section h1 {
-        font-size: 4rem;
+        font-size: 2.5rem;  /* Reduced font size */
         margin-bottom: 1rem;
     }
 
     .hero-section p {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
+        font-size: 1.2rem;  /* Reduced font size */
+        margin-bottom: 1.5rem;
     }
 
     .hero-section .btn {
-        font-size: 1.2rem;
-        padding: 0.75rem 1.5rem;
+        font-size: 1rem;  /* Adjusted button size */
+        padding: 0.5rem 1.2rem;
         border-radius: 0.25rem;
         background-color: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
@@ -115,7 +113,7 @@
     /* Image Styling */
     .uniform-image {
         width: 100%;
-        height: 400px;
+        height: 350px;  /* Reduced image height */
         object-fit: cover;
         margin-bottom: 20px;
         transition: transform 0.3s ease;
@@ -137,12 +135,12 @@
         transform: scale(1.05);
     }
 
-    /* Review Styling */
+    /* Review Section */
     .list-group-item {
         border: 1px solid #ddd;
         border-radius: 5px;
-        margin-bottom: 10px;
-        padding: 20px;
+        margin-bottom: 5px;  /* Reduced margin between reviews */
+        padding: 15px;  /* Reduced padding */
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
@@ -152,15 +150,15 @@
     }
 
     .review-item h5 {
-        font-size: 1.25rem;
+        font-size: 1rem;  /* Smaller font size */
     }
 
     .review-item small {
-        font-size: 0.875rem;
+        font-size: 0.8rem;  /* Smaller font size */
     }
 
     .review-item p {
-        font-size: 1rem;
+        font-size: 0.9rem;  /* Smaller font size */
         margin-bottom: 0.5rem;
     }
 
@@ -189,31 +187,31 @@
         --button-bg-hover-color: #1c60c9;
         --button-hover-text-color: #ffffff;
         --link-color: #1e90ff;
+    }
 
-        .review-item {
-            background-color: #2b2b2b;  /* Darker background for reviews */
-            color: #f9f9f9;  /* Light text color */
-        }
+    [data-theme="dark"] .review-item {
+        background-color: #2b2b2b;  /* Darker background for reviews */
+        color: #f9f9f9;  /* Light text color */
+    }
 
-        .review-item h5 {
-            color: #ffde59;  /* Light color for username in dark mode */
-        }
+    [data-theme="dark"] .review-item h5 {
+        color: #ffde59;  /* Light color for username in dark mode */
+    }
 
-        .review-item small {
-            color: #bbb;  /* Lighter color for timestamps in dark mode */
-        }
+    [data-theme="dark"] .review-item small {
+        color: #bbb;  /* Lighter color for timestamps in dark mode */
+    }
 
-        .review-item p {
-            color: #ccc;  /* Lighter comment text in dark mode */
-        }
+    [data-theme="dark"] .review-item p {
+        color: #ccc;  /* Lighter comment text in dark mode */
+    }
 
-        .fa-star {
-            color: #ffd700;  /* Gold stars for ratings */
-        }
+    [data-theme="dark"] .fa-star {
+        color: #ffd700;  /* Gold stars for ratings */
+    }
 
-        .fa-star.checked {
-            color: #ffd700;
-        }
+    [data-theme="dark"] .fa-star.checked {
+        color: #ffd700;
     }
 </style>
 {% endblock %}
